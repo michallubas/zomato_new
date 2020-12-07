@@ -20,14 +20,6 @@ app = Flask(__name__)
 class Simulation():
     def __init__(self):
 
-        # CLEAR database
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-        query = "DELETE FROM readings"
-        cursor.execute(query)
-        connection.commit()
-        connection.close()
-
         loops = 100
         dt = 0.1
         V_max = 27.7
@@ -83,11 +75,6 @@ class Simulation():
                                '1/1000')                          # Wi => F
         gain_Wz1000 = GainUnit('GWz1000', 'divide_1000', 0,
                                '1/1000')                          # Wz => F
-
-        # database
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-        query = "INSERT INTO readings VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
 
         gain_a_records = []
         speed_records = []
@@ -161,17 +148,9 @@ class Simulation():
 
             speed.updateDataIn(gain_a.getdataOut())
 
-        #####################################################################################################################################
-        # (id int PRIMARY KEY, t real, V real, s real, TP real, RF real, Wz real, sum real, Ga real, GWi real, GWi1000 real, GWz1000 real)
-        # adding to database
-            cursor.execute(query, (id, t, speed.getdataOut(), road.getdataOut(), track_profile.getdataOut(), tracking_force.getdataOut(), resistance.getdataOut(),
-                                   summary.getdataOut(), gain_a.getdataOut(),  gain_Wi.getdataOut(), gain_Wi1000.getdataOut(), gain_Wz1000.getdataOut()))
-            connection.commit()
-
           # check
             check_V_s.updateDataIn(speed.getdataOut(), road.getdataOut())
             if (check_V_s.calculate() and id > 4):
-                connection.close()
                 break
 
         #     print('XXXXXXXX END  LOOP   XXXXXXXXXX')
@@ -188,8 +167,6 @@ class Simulation():
 
             id += 1
             # finish loop
-
-        connection.close()
 
         plt.rcParams.update({'font.size': 8})
         fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5, figsize=(15, 15))
