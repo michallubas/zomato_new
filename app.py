@@ -20,9 +20,11 @@ def predict():
     '''
     For rendering results on HTML GUI
     '''
-    features = [int(x) for x in request.form.values()]
-    final_features = [np.array(features)]
-    prediction = model.predict(final_features)
+    # features = [int(x) for x in request.form.values()]
+    # final_features = [np.array(features)]
+    # prediction = model.predict(final_features)
+
+    prediction = model.test()
 
     output = round(prediction[0], 1)
 
