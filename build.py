@@ -11,7 +11,7 @@ warnings.filterwarnings('ignore')
 df = pd.read_csv('Zomato_df.csv')
 
 df.drop('Unnamed: 0', axis=1, inplace=True)
-print(df.head())
+# print(df.head())
 
 x = df.drop('rate', axis=1)
 y = df['rate']
@@ -37,4 +37,4 @@ pickle.dump(nic, open('model.pkl', 'wb'))
 # pickle.dump(ET_Model, open('model.pkl', 'wb'))
 
 
-print(predictions)
+# print(predictions)
