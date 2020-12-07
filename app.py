@@ -13,6 +13,7 @@ def home():
 
 # @test
 # nic
+# tetst test
 
 @app.route('/predict', methods=['POST'])
 def predict():
