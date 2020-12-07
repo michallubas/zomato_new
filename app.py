@@ -26,7 +26,8 @@ def predict():
 
     prediction = model.test()
 
-    output = round(prediction[0], 1)
+    output = prediction
+    # output = round(prediction[0], 1)
 
     return render_template('index.html', prediction_text=f'Your Rating is: {output}')
 
