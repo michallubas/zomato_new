@@ -27,8 +27,9 @@ def predict():
 
     features = [int(x) for x in request.form.values()]
 
-    prediction = model.suma(features)
+    # prediction = model.suma(features)
     # prediction = Hello()
+    prediction = [1, 2, 3, 4, 5]
 
     output = prediction
     # output = round(prediction[0], 1)
