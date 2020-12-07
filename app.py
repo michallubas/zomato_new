@@ -4,7 +4,7 @@ import pickle
 from build import Hello
 
 app = Flask(__name__)
-model = pickle.load(open('model.pkl', 'rb'))
+# model = pickle.load(open('model.pkl', 'rb'))
 
 
 @app.route('/')
