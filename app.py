@@ -483,84 +483,6 @@ class Signal():
         return (f'Name: {self.name}, dataIn: {self.dataIn},dataOut: {self.dataOut }')
 
 
-# Interpolation version 1, two tables
-# class Table():
-#     def __init__(self,name, dataIn, dataIn_3, dataIn_4):
-#         self.dataIn=dataIn
-#         self.dataIn_3=dataIn_3
-#         self.dataIn_4=dataIn_4
-#         self.name = name
-#         self.dataOut=0
-
-#     def updateDataIn(self, new_dataIn):
-#         self.dataIn = new_dataIn
-
-
-# #           [21,30,44], [300,265,190,125]
-
-#     def calculate(self):
-#         counter=0
-#         for numb in self.dataIn_3:
-#             if self.dataIn <= numb:
-#                 self.dataOut = self.dataIn_4[counter]
-#                 return self.dataOut
-#             counter+=1
-
-#         self.dataOut = self.dataIn_4[ len(self.dataIn_4) - 1 ]
-#         return self.dataOut
-
-#     def getdataOut(self):
-#         return self.dataOut
-
-#     def __repr__(self):
-#         return (f'Name: {self.name}, dataIn: {self.dataIn}, dataOut: {self.dataOut} ')
-
-
-# Interpolation version 2, vectors
-# class Table():
-#     def __init__(self, name, dataIn, dataIn_x, dataIn_y):
-#         self.dataIn=dataIn
-#         self.x=dataIn_x
-#         self.y=dataIn_y
-#         self.name = name
-#         self.dataOut=0
-
-#         # number of points:
-#         self.N = 4
-
-#         # use the numpy.vander, option increasing=True so that powers of  increase left-to-right:
-#         self.X = np.vander(self.x,increasing=True)
-
-
-#         # Compute the vector a of coefficients:
-#         self.a = la.solve(self.X,self.y)
-
-#         # Accuracy, only to check
-#         self.xs = np.linspace(0,max(self.x),100)
-#         self.ys = sum([self.a[k]*self.xs**k for k in range(0,self.N)])
-# #         plt.plot(self.xs,self.ys,self.x,self.y,'b.',ms=10)
-# #         plt.show()
-
-#     def updateDataIn(self, new_dataIn):
-#         self.dataIn = new_dataIn
-
-
-# #           [21,30,44], [300,265,190,125]
-
-#     def calculate(self):
-
-#         self.dataOut =   self.a[0] + self.a[1]*self.dataIn + self.a[2]*self.dataIn**2 + self.a[3]*self.dataIn**3
-#         return self.dataOut
-
-#     def getdataOut(self):
-#         return self.dataOut
-
-#     def __repr__(self):
-#         return (f'Name: {self.name}, dataIn: {self.dataIn}, dataOut: {self.dataOut} ')
-
-x = Simulation()
-
-
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -578,12 +500,12 @@ def predict():
     # features = [int(x) for x in request.form.values()]
     # final_features = [np.array(features)]
     # prediction = model.predict(final_features)
-
+    x = Simulation()
     features = [int(x) for x in request.form.values()]
 
     # prediction = model.suma(features)
     # prediction = Hello()
-    prediction = [1, 2, 3, 4, 5]
+    prediction = x.t_records
 
     output = prediction
     # output = round(prediction[0], 1)
