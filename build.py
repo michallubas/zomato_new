@@ -21,7 +21,10 @@ X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_
 
 class Hello():
     def test(self):
-        return 'hello'
+        return 'helloooooooo'
+
+    def suma(self, list):
+        return sum(list)
 
 
 nic = Hello()

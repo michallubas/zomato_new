@@ -1,10 +1,10 @@
 import numpy as np
 from flask import Flask, request, jsonify, render_template
 import pickle
-# from build import Hello
+from build import Hello
 
 app = Flask(__name__)
-# model = pickle.load(open('model.pkl', 'rb'))
+model = pickle.load(open('model.pkl', 'rb'))
 
 
 @app.route('/')
@@ -25,8 +25,10 @@ def predict():
     # final_features = [np.array(features)]
     # prediction = model.predict(final_features)
 
-    # prediction = model.test()
-    prediction = "heeeello"
+    features = [int(x) for x in request.form.values()]
+
+    prediction = model.suma(features)
+    # prediction = Hello()
 
     output = prediction
     # output = round(prediction[0], 1)
