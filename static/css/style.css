@@ -39,7 +39,7 @@ body {
 	height:400px;
 }
 
-.login h1 { color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.3); letter-spacing:1px; text-align:center; }
+.login h1 { color: dark; text-shadow: 0 0 10px rgba(53, 0, 61, 1); letter-spacing:1px; text-align:center; }
 
 input {
 	width: 100%;

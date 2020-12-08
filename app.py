@@ -18,17 +18,17 @@ app = Flask(__name__)
 
 
 class Simulation():
-    def __init__(self, loops):
+    def __init__(self, loops, dt, V_max, V_min, s_max, s_min, V_start, F_brake):
 
         self.loops = loops
-        self.dt = 0.1
-        self.V_max = 27.7
-        self.V_min = 0
-        self.s_max = 100000
-        self.s_min = 0
-        self.V_start = 19.446
+        self.dt = dt
+        self.V_max = V_max
+        self.V_min = V_min
+        self.s_max = s_max
+        self.s_min = s_min
+        self.V_start = V_start
         # V_start = 0
-        self.F_brake = 4000
+        self.F_brake = F_brake
         # F_brake = 0
 
         # initiation of objects
@@ -500,10 +500,19 @@ def predict():
     '''
     # features = [int(x) for x in request.form.values()]
     temp_loops = int(request.form['loops'])
+    temp_dt = float(request.form['dt'])
+    temp_V_max = float(request.form['V_max'])
+    temp_V_min = float(request.form['V_min'])
+    temp_s_max = float(request.form['s_max'])
+    temp_s_min = float(request.form['s_min'])
+    temp_V_start = float(request.form['V_start'])
+    temp_F_brake = float(request.form['F_brake'])
+
     # final_features = [np.array(features)]
     # prediction = model.predict(final_features)
-    train = Simulation(temp_loops)
-    features = [int(x) for x in request.form.values()]
+    train = Simulation(temp_loops, temp_dt, temp_V_max, temp_V_min,
+                       temp_s_max, temp_s_min, temp_V_start, temp_F_brake)
+    # features = [int(x) for x in request.form.values()]
 
     # prediction = model.suma(features)
     # prediction = Hello()
