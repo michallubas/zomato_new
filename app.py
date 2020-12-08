@@ -496,7 +496,7 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     '''
-    For rendering results on HTML GUI
+    For rendering results on HTML GUI ,
     '''
     # features = [int(x) for x in request.form.values()]
     temp_loops = int(request.form['loops'])
