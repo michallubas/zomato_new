@@ -506,13 +506,13 @@ def predict():
 
     # prediction = model.suma(features)
     # prediction = Hello()
-    prediction = train.road_records[len(road_records)-1]
+    prediction = train.road_records[len(train.road_records)-1]
     # print(prediction)
 
     output = prediction
     # output = round(prediction[0], 1)
 
-    return render_template('index.html', prediction_text=f'Droga hamownia: {round(output,2} metra')
+    return render_template('index.html', prediction_text=f'Droga  hamownia: {round(output,2)} metra')
 
 
 if __name__ == "__main__":
