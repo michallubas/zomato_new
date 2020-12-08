@@ -18,9 +18,9 @@ app = Flask(__name__)
 
 
 class Simulation():
-    def __init__(self):
+    def __init__(self, loops):
 
-        self.loops = 100
+        self.loops = loops
         self.dt = 0.1
         self.V_max = 27.7
         self.V_min = 0
@@ -499,9 +499,10 @@ def predict():
     For rendering results on HTML GUI
     '''
     # features = [int(x) for x in request.form.values()]
+    temp_loops = int(request.form['loops'])
     # final_features = [np.array(features)]
     # prediction = model.predict(final_features)
-    train = Simulation()
+    train = Simulation(temp_loops)
     features = [int(x) for x in request.form.values()]
 
     # prediction = model.suma(features)
