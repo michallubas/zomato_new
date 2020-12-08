@@ -20,77 +20,77 @@ app = Flask(__name__)
 class Simulation():
     def __init__(self):
 
-        loops = 100
-        dt = 0.1
-        V_max = 27.7
-        V_min = 0
-        s_max = 100000
-        s_min = 0
-        V_start = 19.446
+        self.loops = 100
+        self.dt = 0.1
+        self.V_max = 27.7
+        self.V_min = 0
+        self.s_max = 100000
+        self.s_min = 0
+        self.V_start = 19.446
         # V_start = 0
-        F_brake = 4000
+        self.F_brake = 4000
         # F_brake = 0
 
         # initiation of objects
 
         # format for below instances: dataIn,dataOut, dataOut_max, method
-        speed = Integral('V', 'speed', 0, V_start, V_max, 'trapezoid',
-                         dt)                   # a     =>  V  [m/s]
-        road = Integral('s', 'road', 0, 0, s_max, 'trapezoid',
-                        dt)                       # V     =>  s [m]
+        self.speed = Integral('V', 'speed', 0, self.V_start, self.V_max, 'trapezoid',
+                              self.dt)                   # a     =>  V  [m/s]
+        self.road = Integral('s', 'road', 0, 0, self.s_max, 'trapezoid',
+                             self.dt)                       # V     =>  s [m]
 
         # format for below instances:  name, data in: axis x , data in: axis y
-        track_profile = Table('TP', 'tr_profile', 0, [0, 1, 10, 100, 1000, 10000, 1000000], [
-                              0, 0, 0, 0, 0, 0, 0])                                        # s     =>  i
-        tracking_force = Table('RF', 'tr_force', 0, [0, 9.72, 11.12, 15.3, 22.22, 30.56, 33.4], [
-                               0, 0, 0, 0, 0, 0, 0])                                       # V     =>  F
+        self.track_profile = Table('TP', 'tr_profile', 0, [0, 1, 10, 100, 1000, 10000, 1000000], [
+            0, 0, 0, 0, 0, 0, 0])                                        # s     =>  i
+        self.tracking_force = Table('RF', 'tr_force', 0, [0, 9.72, 11.12, 15.3, 22.22, 30.56, 33.4], [
+            0, 0, 0, 0, 0, 0, 0])                                       # V     =>  F
         # tracking_force = Table('RF', 'tr_force', 0, [0, 9.72, 11.12, 15.3, 22.22, 30.56, 33.4], [
         #                        3000, 3000, 2800, 2000, 1400, 1000, 900])                                       # V     =>  F
 
         # data in=0 for start, for polynomial ax2 + bx + c:  [a,b,c] , positive or negative: 1 or -1
-        resistance = Polynomial('Wz', 'fundamental_resistance', 0, [
-            1300*9.81*0.00065 + 0.6*0.3*0.9*1.6*1.48, 0, 0.012*1300*9.81], -1.0, dt)   # V  => Wz
+        self.resistance = Polynomial('Wz', 'fundamental_resistance', 0, [
+            1300*9.81*0.00065 + 0.6*0.3*0.9*1.6*1.48, 0, 0.012*1300*9.81], -1.0, self.dt)   # V  => Wz
 
         # train:
         # resistance = Polynomial('Wz', 'fundamental_resistance', 0, [
         #                         0.6*0.35*0.9*1.6*1.48, 0, 0.012+(1200*9.81)], -1.0, dt)  # V  => Wz
 
         # last number is brake
-        summary = Summary('sum', 'summary', F_brake, 0, 0, 0)   # F     =>  sum
+        self.summary = Summary('sum', 'summary', self.F_brake, 0, 0, 0)   # F     =>  sum
 
         # train
         # tracking_force = Table('tr_force' , 0,[0,21,30,44], [300,265,190,125] )             # V     =>  F
 
         # Check for min & max
-        check_V_s = Check('c', 'check_V_s', V_max, s_max, V_min, s_min)
+        self.check_V_s = Check('c', 'check_V_s', self.V_max, self.s_max, self.V_min, self.s_min)
 
         # format for below gains/instances:  name, data in: x, data in: y, divide/multiply by..
-        gain_a = Gain('Ga', 'conv: force_to_a', 0, 1300, 1.085,
-                      '1/(xy)')                        # F     =>  a
-        gain_Wi = Gain('GWi', 'conv: i_to_w', 0, 1300, 9.81,
-                       'xy')                            # i     =>  Wi
+        self.gain_a = Gain('Ga', 'conv: force_to_a', 0, 1300, 1.085,
+                           '1/(xy)')                        # F     =>  a
+        self.gain_Wi = Gain('GWi', 'conv: i_to_w', 0, 1300, 9.81,
+                            'xy')                            # i     =>  Wi
 
         # options for actions in GainUnit: 1*1000 or 1/1000
-        gain_Wi1000 = GainUnit('GWi1000', 'divide_1000', 0,
-                               '1/1000')                          # Wi => F
-        gain_Wz1000 = GainUnit('GWz1000', 'divide_1000', 0,
-                               '1/1000')                          # Wz => F
+        self.gain_Wi1000 = GainUnit('GWi1000', 'divide_1000', 0,
+                                    '1/1000')                          # Wi => F
+        self.gain_Wz1000 = GainUnit('GWz1000', 'divide_1000', 0,
+                                    '1/1000')                          # Wz => F
 
-        gain_a_records = []
-        speed_records = []
-        road_records = []
-        tracking_force_records = []
-        summary_records = []
-        t_records = []
+        self.gain_a_records = []
+        self.speed_records = []
+        self.road_records = []
+        self.tracking_force_records = []
+        self.summary_records = []
+        self.t_records = []
 
     #####################################################################################################################
     # symulacja
 
     # initial time t=0
-        t = 0
-        id = 0
+        self.t = 0
+        self.id = 0
 
-        while id < loops:
+        while self.id < self.loops:
             # start loop
             #     print('OOOOOO     START LOOP   OOOOOOOO')
 
@@ -110,26 +110,26 @@ class Simulation():
             # print()
             # print()
 
-            speed.calculate()
-            road.updateDataIn(speed.getdataOut())                   # V => road
-            tracking_force.updateDataIn(speed.getdataOut())         # V => tracking_force
-            resistance.updateDataIn(speed.getdataOut())             # V => resistance
+            self.speed.calculate()
+            self.road.updateDataIn(self.speed.getdataOut())                   # V => road
+            self.tracking_force.updateDataIn(self.speed.getdataOut())         # V => tracking_force
+            self.resistance.updateDataIn(self.speed.getdataOut())             # V => resistance
 
-            road.calculate()
-            track_profile.updateDataIn(road.getdataOut())
+            self.road.calculate()
+            self.track_profile.updateDataIn(self.road.getdataOut())
 
-            track_profile.calculate()
-            gain_Wi.updateDataIn(track_profile.getdataOut())
+            self.track_profile.calculate()
+            self.gain_Wi.updateDataIn(self.track_profile.getdataOut())
 
-            gain_Wi.calculate()
+            self.gain_Wi.calculate()
 
             # for car no gain for road profile !!!
             # gain_Wi1000.updateDataIn(gain_Wi.getdataOut())
             # gain_Wi1000.calculate()
 
-            tracking_force.calculate()
+            self.tracking_force.calculate()
 
-            resistance.calculate()
+            self.resistance.calculate()
 
             # for car no gain for resitance !!!
             # gain_Wz1000.updateDataIn(resistance.getdataOut())
@@ -137,35 +137,36 @@ class Simulation():
             # summary.updateDataIn(gain_Wi1000.getdataOut(), gain_Wz1000.getdataOut(),
             #                      tracking_force.getdataOut())
 
-            summary.updateDataIn(gain_Wi.getdataOut(), resistance.getdataOut(),
-                                 tracking_force.getdataOut())
+            self.summary.updateDataIn(self.gain_Wi.getdataOut(), self.resistance.getdataOut(),
+                                      self.tracking_force.getdataOut())
 
-            summary.calculate()
-            gain_a.updateDataIn(summary.getdataOut())
+            self.summary.calculate()
+            self.gain_a.updateDataIn(self.summary.getdataOut())
 
-            gain_a.calculate()
+            self.gain_a.calculate()
             # gain_a.updateDataOut(-5)
 
-            speed.updateDataIn(gain_a.getdataOut())
+            self.speed.updateDataIn(self.gain_a.getdataOut())
 
           # check
-            check_V_s.updateDataIn(speed.getdataOut(), road.getdataOut())
-            if (check_V_s.calculate() and id > 4):
+            self.check_V_s.updateDataIn(self.speed.getdataOut(), self.road.getdataOut())
+            if (self.check_V_s.calculate() and self.id > 4):
+                self.check_V_s.updateDataIn(self.speed.getdataOut(), self.road.getdataOut())
                 break
 
         #     print('XXXXXXXX END  LOOP   XXXXXXXXXX')
 
             # records
-            gain_a_records.append(gain_a.getdataOut())
-            speed_records.append(speed.getdataOut())
-            road_records.append(road.getdataOut())
-            tracking_force_records.append(tracking_force.getdataOut())
-            summary_records.append(summary.getdataOut())
-            t_records.append(t)
+            self.gain_a_records.append(self.gain_a.getdataOut())
+            self.speed_records.append(self.speed.getdataOut())
+            self.road_records.append(self.road.getdataOut())
+            self.tracking_force_records.append(self.tracking_force.getdataOut())
+            self.summary_records.append(self.summary.getdataOut())
+            self.t_records.append(self.t)
 
-            t = t+dt
+            self.t = self.t+self.dt
 
-            id += 1
+            self.id += 1
             # finish loop
 
         plt.rcParams.update({'font.size': 8})
@@ -174,27 +175,27 @@ class Simulation():
         # plt.rcParams['figure.constrained_layout.use'] = True
         # fig.tight_layout()
 
-        ax1.plot(t_records, speed_records, 'b')
+        ax1.plot(self.t_records, self.speed_records, 'b')
         ax1.set(xlabel='time [s]', ylabel='speed [m/s]')
         ax1.set_xlim(xmin=0)
         ax1.set_ylim(ymin=0)
 
-        ax2.plot(t_records, tracking_force_records, 'r')
+        ax2.plot(self.t_records, self.tracking_force_records, 'r')
         ax2.set(xlabel='time [s]', ylabel='tracking_force [N]')
         ax2.set_xlim(xmin=0)
         ax2.set_ylim(ymin=-0.1)
 
-        ax3.plot(t_records, road_records, 'y')
+        ax3.plot(self.t_records, self.road_records, 'y')
         ax3.set(xlabel='time [s]', ylabel='road [m]')
         ax3.set_xlim(xmin=0)
         ax3.set_ylim(ymin=0)
 
-        ax4.plot(t_records, gain_a_records, 'r')
+        ax4.plot(self.t_records, self.gain_a_records, 'r')
         ax4.set(xlabel='time [s]', ylabel='a [m/s2]')
         ax4.set_xlim(xmin=0)
         ax4.set_ylim(ymin=-10)
 
-        ax5.plot(road_records, speed_records, 'y')
+        ax5.plot(self.road_records, self.speed_records, 'y')
         ax5.set(xlabel='road [m]', ylabel='speed [m/s]')
         ax5.set_xlim(xmin=0)
         ax5.set_ylim(ymin=0)
@@ -506,6 +507,7 @@ def predict():
     # prediction = model.suma(features)
     # prediction = Hello()
     prediction = x.t_records
+    print(prediction)
 
     output = prediction
     # output = round(prediction[0], 1)
